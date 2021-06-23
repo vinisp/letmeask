@@ -4,12 +4,15 @@ import { FormEvent, useState } from 'react'
 
 import { useAuth } from '../hooks/useAuth'
 
+import { database } from '../services/firebase'
+
 import illustrationImg from '../assets/images/illustration.svg'
 import logoImg from '../assets/images/logo.svg'
 import googleIconImg from '../assets/images/google-icon.svg'
 import {Button} from '../components/Button'
 
 import '../styles/auth.scss'
+
 
 //webpack
 
@@ -18,7 +21,7 @@ export function Home(){
     const {signInWithGoogle, user } = useAuth()
     const [roomCode, setRoomCode] = useState('')
 
-   async function HandleCreateRom(){
+    async function HandleCreateRom(){
         if(!user){
             await signInWithGoogle()
         }
@@ -27,7 +30,20 @@ export function Home(){
     }
 
     async function handleJoinRoom(event: FormEvent) {
-        event.preventDefault();        
+        event.preventDefault();
+
+        if(roomCode.trim() === ''){
+            return;
+        }
+
+        const roomRef = await database.ref(`rooms/${roomCode}`).get()
+
+        if(!roomRef.exists()){
+            alert('Está sala não existe!')
+            return;
+        }
+
+        history.push(`rooms/${roomCode}`);
     }
 
     return(
