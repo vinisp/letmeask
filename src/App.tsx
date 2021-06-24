@@ -8,12 +8,11 @@ import {BrowserRouter,Route, Switch } from 'react-router-dom'
 
 import {Home} from './pages/Home'
 import {NewRoom} from './pages/NewRoom'
-
+import { Room } from './pages/Room'
+import { AdminRoom } from './pages/AdminRoom'
 
 import {AuthContextProvider} from './context/AuthContext'
 //AuthContextProvider, foi o contexto criado para verificar se o usuário está logado, isso é muito importante para liberar o acesso as páginas e as funcionalidades da nossa aplicação.
-
-import { Room } from './pages/Room'
 
 function App() {
   return (
@@ -23,6 +22,7 @@ function App() {
             <Route path="/" exact={true} component={Home} />
             <Route path="/rooms/new" exact={true} component={NewRoom} />
             <Route path="/rooms/:id" component={Room} />
+            <Route path="/admin/rooms/:id" component={AdminRoom} />
           </Switch>
         </AuthContextProvider>
       </BrowserRouter>
